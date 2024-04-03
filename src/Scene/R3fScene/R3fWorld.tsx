@@ -29,7 +29,6 @@ export const R3fWorld = () => {
         setDpr(0.5 * dprFactor)
       }}
     >
-      {/* <R3fEffect/> */}
       <R3fLight/>
       <Assets/>
       {SHOW_AXES_HELPER && <axesHelper args={[AXES_LENGTH]}/>}
