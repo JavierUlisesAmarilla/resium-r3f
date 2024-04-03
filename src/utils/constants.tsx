@@ -1,0 +1,9 @@
+export const LIGHT_RADIUS = 0
+export const SHOW_AXES_HELPER = false
+export const AXES_LENGTH = 10
+export const ANGLE_TOLERANCE_FACTOR = 0.01
+export const ANIM_DURATION = 1
+export const ROT_ANIM_FACTOR = 1
+export const LIGHT_OFFSET = 100
+export const MIN_POLAR_ANGLE_FACTOR = 0.00001
+export const MOUSE_SYNC_DELAY = 200
