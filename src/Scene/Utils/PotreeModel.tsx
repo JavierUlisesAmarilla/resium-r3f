@@ -9,8 +9,8 @@ export type PotreeModelType = {
   baseUrl: string
   children?: ReactNode
   pointBudget?: number
-  modelPos?: Vector3
-  modelRot?: Euler
+  modelPosition?: Vector3
+  modelRotation?: Euler
   modelScale?: Vector3
 }
 
@@ -20,8 +20,8 @@ export const PotreeModel = ({
   baseUrl,
   children,
   pointBudget = 1000000,
-  modelPos = [0, 0, 0],
-  modelRot = [0, 0, 0],
+  modelPosition = [0, 0, 0],
+  modelRotation = [0, 0, 0],
   modelScale = 1,
 }: PotreeModelType) => {
   const [potree, setPotree] = useState<Potree>()
@@ -53,8 +53,8 @@ export const PotreeModel = ({
 
   return (
     <group
-      position={modelPos}
-      rotation={modelRot}
+      position={modelPosition}
+      rotation={modelRotation}
       scale={modelScale}
     >
       {pointCloudArr?.map((pointCloud, key) =>

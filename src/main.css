@@ -36,13 +36,3 @@ body,
 .cesium-viewer-bottom {
   display: none;
 }
-
-#leva__root>div {
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
-}
-
-.peni {
-  pointer-events: none !important;
-}

@@ -26,12 +26,12 @@ export const Sprite = ({
   onClick,
 }: SpriteType) => {
   const groupRef = useRef<THREE.Group>(null)
-  const {animMoveToTarget} = useCameraUtils()
+  const {animateR3fZoomToTarget} = useCameraUtils()
 
   const onSpriteClick = async () => {
     if (zoomDistance && groupRef.current?.getWorldPosition) {
       groupRef.current.getWorldPosition(vec3)
-      await animMoveToTarget(vec3, zoomDistance)
+      await animateR3fZoomToTarget(vec3, zoomDistance)
     }
 
     if (onClick) {

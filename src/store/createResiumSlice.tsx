@@ -1,13 +1,19 @@
-import {Cartesian3, Viewer} from 'cesium'
+import * as Cesium from 'cesium'
 import {ZustandSlice} from './useZustand'
 
 
 export type ResiumSlice = {
-  resiumViewer: Viewer | undefined
-  setResiumViewer: (resiumViewer: Viewer | undefined) => void
+  resiumViewer: Cesium.Viewer | undefined
+  setResiumViewer: (resiumViewer: Cesium.Viewer | undefined) => void
 
-  centerCart3: Cartesian3 | undefined
-  setCenterCart3: (centerCart3: Cartesian3) => void
+  tileset: Cesium.Cesium3DTileset | undefined
+  setTileset: (tileset: Cesium.Cesium3DTileset | undefined) => void
+
+  centerCartesian3: Cesium.Cartesian3 | undefined
+  setCenterCartesian3: (centerCartesian3: Cesium.Cartesian3 | undefined) => void
+
+  isResiumCameraBeingUsed: boolean
+  setIsResiumCameraBeingUsed: (isResiumCameraBeingUsed: boolean) => void
 }
 
 
@@ -16,7 +22,13 @@ export const createResiumSlice: ZustandSlice<ResiumSlice> = (set) => {
     resiumViewer: undefined,
     setResiumViewer: (resiumViewer) => set(() => ({resiumViewer})),
 
-    centerCart3: undefined,
-    setCenterCart3: (centerCart3) => set(() => ({centerCart3})),
+    tileset: undefined,
+    setTileset: (tileset) => set(() => ({tileset})),
+
+    centerCartesian3: undefined,
+    setCenterCartesian3: (centerCartesian3) => set(() => ({centerCartesian3})),
+
+    isResiumCameraBeingUsed: false,
+    setIsResiumCameraBeingUsed: (isResiumCameraBeingUsed) => set(() => ({isResiumCameraBeingUsed})),
   }
 }

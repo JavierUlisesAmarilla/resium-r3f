@@ -9,7 +9,7 @@ import {MIN_POLAR_ANGLE_FACTOR} from '../../utils/constants'
 export const R3fControls = () => {
   const orbitControlsRef = useRef<OrbitControlsImpl>(null)
   const {setR3fControlsRef} = useZustand()
-  const {syncCesium} = useCameraUtils()
+  const {syncR3fToResium} = useCameraUtils()
 
   useEffect(() => {
     setR3fControlsRef(orbitControlsRef)
@@ -22,7 +22,7 @@ export const R3fControls = () => {
       makeDefault
       maxPolarAngle={(1 - MIN_POLAR_ANGLE_FACTOR) * Math.PI}
       minPolarAngle={MIN_POLAR_ANGLE_FACTOR * Math.PI}
-      onChange={syncCesium}
+      onChange={syncR3fToResium}
     />
   )
 }

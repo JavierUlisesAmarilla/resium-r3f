@@ -1,8 +1,5 @@
 export const controls = {
-  transformMode: {
-    value: 'scale', label: 'Transform Mode', options: ['translate', 'rotate', 'scale'],
-  },
-  useResium: {
-    value: false, label: 'Use Resium',
+  navigationMode: {
+    value: 'mapControls', label: 'Navigation Mode', options: {'Map Controls': 'mapControls', 'Orbit Controls': 'orbitControls'},
   },
 }

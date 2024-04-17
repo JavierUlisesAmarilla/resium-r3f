@@ -1,12 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import {PerformanceMonitor} from '@react-three/drei'
 import {useThree} from '@react-three/fiber'
-import {AXES_LENGTH, SHOW_AXES_HELPER} from '../../utils/constants'
-import {Assets} from './Assets/Assets'
-import {R3fLight} from './R3fLight'
-
-
-const dprFactor = 1
+import {AXES_LENGTH, DPR_FACTOR, SHOW_AXES_HELPER} from '../../utils/constants'
 
 
 export const R3fWorld = () => {
@@ -15,22 +10,21 @@ export const R3fWorld = () => {
   return (
     <PerformanceMonitor
       onChange={({factor}) => {
-        const newDpr = (0.5 + (1.5 * factor)) * dprFactor
+        const newDpr = (0.5 + (1.5 * factor)) * DPR_FACTOR
         setDpr(newDpr)
       }}
       onIncline={() => {
-        setDpr(2 * dprFactor)
+        setDpr(2 * DPR_FACTOR)
       }}
       onDecline={() => {
-        setDpr(0.5 * dprFactor)
+        setDpr(0.5 * DPR_FACTOR)
       }}
       flipflops={3}
       onFallback={() => {
-        setDpr(0.5 * dprFactor)
+        setDpr(0.5 * DPR_FACTOR)
       }}
     >
-      <R3fLight/>
-      <Assets/>
+      {/* <R3fAssets/> */}
       {SHOW_AXES_HELPER && <axesHelper args={[AXES_LENGTH]}/>}
     </PerformanceMonitor>
   )

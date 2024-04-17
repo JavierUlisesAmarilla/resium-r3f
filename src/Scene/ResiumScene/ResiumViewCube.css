@@ -1,0 +1,198 @@
+:root {
+  --resium-view-cube-stroke-color: #646d79;
+  --resium-view-cube-fill-color: #bbc5cfdd;
+  --resium-view-cube-edge-color: #99a8c0dd;
+  --resium-view-cube-hover-color: #62789bdd;
+  --resium-view-cube-hover-border-color: #e9c664;
+  --resium-view-cube-size: 50px;
+  --resium-view-cube-quarter-size: 25px;
+  --resium-view-cube-quarter-negative-size: -25px;
+  --resium-view-cube-edge-height: 10px;
+  --resium-view-cube-edge-negative-height: -10px;
+  --resium-view-cube-edge-half-height: 5px;
+  --resium-view-cube-edge-half-negative-height: -5px;
+}
+
+:host * {
+  box-sizing: content-box;
+}
+
+#wrapper {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  bottom: 0;
+  right: 0;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  user-select: none;
+  z-index: 1;
+}
+
+#cube {
+  position: relative;
+  width: 50%;
+  height: 50%;
+  top: 25%;
+  transform-style: preserve-3d;
+  margin: auto;
+  will-change: transform;
+}
+
+/* Sides */
+
+#cube>.side {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: var(--resium-view-cube-stroke-color);
+  background-color: var(--resium-view-cube-fill-color);
+  border: 1px solid var(--resium-view-cube-stroke-color);
+}
+
+#cube>.side>div {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  height: 60%;
+}
+
+#cube>.side>div:hover {
+  background-color: var(--resium-view-cube-hover-color);
+  border: 2px solid var(--resium-view-cube-hover-border-color);
+}
+
+#side_t {
+  transform: rotateX(90deg) translateZ(var(--resium-view-cube-quarter-size));
+}
+
+#side_w {
+  transform: rotateY(-90deg) translateZ(var(--resium-view-cube-quarter-size));
+}
+
+#side_s {
+  transform: translateZ(var(--resium-view-cube-quarter-size));
+}
+
+#side_e {
+  transform: rotateY(90deg) translateZ(var(--resium-view-cube-quarter-size));
+}
+
+#side_n {
+  transform: rotateY(180deg) translateZ(var(--resium-view-cube-quarter-size));
+}
+
+#side_b {
+  transform: rotateX(-90deg) translateZ(var(--resium-view-cube-quarter-size));
+}
+
+/* Edges */
+
+#cube>.edge {
+  position: relative;
+  width: 60%;
+  transform-style: preserve-3d;
+  margin: auto;
+  will-change: transform;
+}
+
+#cube>.edge>div {
+  position: absolute;
+  width: 100%;
+  height: var(--resium-view-cube-edge-height);
+  background-color: var(--resium-view-cube-edge-color);
+}
+
+#cube>.edge>div:nth-child(1) {
+  transform: rotateX(90deg) translateY(var(--resium-view-cube-edge-half-negative-height)) translateZ(var(--resium-view-cube-edge-half-height));
+}
+
+#cube>.edge:has(:hover)>div {
+  background-color: var(--resium-view-cube-hover-color);
+  border: 2px solid var(--resium-view-cube-hover-border-color);
+}
+
+#edge_tw {
+  transform: translateX(-25.8px) rotateY(-90deg);
+}
+
+#edge_ts {
+  transform: translateZ(var(--resium-view-cube-quarter-size));
+}
+
+#edge_te {
+  transform: translateX(var(--resium-view-cube-quarter-size)) rotateY(90deg);
+}
+
+#edge_tn {
+  transform: translateZ(var(--resium-view-cube-quarter-negative-size)) rotateY(180deg);
+}
+
+#edge_ws {
+  transform: translateX(-25.8px) translateY(var(--resium-view-cube-quarter-size)) translateZ(var(--resium-view-cube-quarter-size)) rotateZ(-90deg);
+}
+
+#edge_se {
+  transform: translateX(var(--resium-view-cube-quarter-size)) translateY(var(--resium-view-cube-quarter-size)) translateZ(var(--resium-view-cube-quarter-size)) rotateZ(90deg);
+}
+
+#edge_en {
+  transform: translateX(var(--resium-view-cube-quarter-size)) translateY(var(--resium-view-cube-quarter-size)) translateZ(var(--resium-view-cube-quarter-negative-size)) rotateX(90deg) rotateY(90deg);
+}
+
+#edge_nw {
+  transform: translateX(-25.8px) translateY(var(--resium-view-cube-quarter-size)) translateZ(var(--resium-view-cube-quarter-negative-size)) rotateZ(90deg) rotateX(180deg);
+}
+
+/* Vertices */
+
+#cube>.vertex {
+  position: absolute;
+  transform-style: preserve-3d;
+  margin: auto;
+  will-change: transform;
+  background-color: rgba(0, 128, 0, 0.5);
+}
+
+#cube>.vertex>div {
+  position: absolute;
+  left: 0;
+  width: var(--resium-view-cube-edge-height);
+  height: var(--resium-view-cube-edge-height);
+}
+
+#cube>.vertex>div:nth-child(1) {
+  transform: translateY(var(--resium-view-cube-edge-half-negative-height)) translateZ(var(--resium-view-cube-edge-half-negative-height)) rotateX(-90deg);
+}
+
+#cube>.vertex>div:nth-child(2) {
+  transform: translateX(var(--resium-view-cube-edge-half-negative-height)) translateZ(var(--resium-view-cube-edge-half-negative-height)) rotateY(-90deg);
+}
+
+#cube>.vertex:has(:hover)>div {
+  background-color: var(--resium-view-cube-hover-color);
+  border: 2px solid var(--resium-view-cube-hover-border-color);
+}
+
+#vertex_tws {
+  transform: translateZ(var(--resium-view-cube-quarter-size));
+}
+
+#vertex_tse {
+  transform: translateX(var(--resium-view-cube-size)) translateZ(var(--resium-view-cube-quarter-size)) rotateY(90deg);
+}
+
+#vertex_ten {
+  transform: translateX(var(--resium-view-cube-size)) translateZ(var(--resium-view-cube-quarter-negative-size)) rotateY(180deg);
+}
+
+#vertex_tnw {
+  transform: translateZ(var(--resium-view-cube-quarter-negative-size)) rotateY(-90deg);
+}

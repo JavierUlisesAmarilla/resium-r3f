@@ -2,11 +2,11 @@ import {ZustandSlice} from './useZustand'
 
 
 export type KeyboardSlice = {
-  isFront: boolean
-  setIsFront: (isFront: boolean) => void
+  isForward: boolean
+  setIsForward: (isForward: boolean) => void
 
-  isBack: boolean
-  setIsBack: (isBack: boolean) => void
+  isBackward: boolean
+  setIsBackward: (isBackward: boolean) => void
 
   isLeft: boolean
   setIsLeft: (isLeft: boolean) => void
@@ -14,24 +14,21 @@ export type KeyboardSlice = {
   isRight: boolean
   setIsRight: (isRight: boolean) => void
 
-  isFast: boolean
-  setIsFast: (isFast: boolean) => void
+  isUpward: boolean
+  setIsUpward: (isUpward: boolean) => void
 
-  isGrab: boolean
-  setIsGrab: (isGrab: boolean) => void
-
-  isJump: boolean
-  setIsJump: (isJump: boolean) => void
+  isDownward: boolean
+  setIsDownward: (isDownward: boolean) => void
 }
 
 
 export const createKeyboardSlice: ZustandSlice<KeyboardSlice> = (set) => {
   return {
-    isFront: false,
-    setIsFront: (isFront) => set(() => ({isFront})),
+    isForward: false,
+    setIsForward: (isForward) => set(() => ({isForward})),
 
-    isBack: false,
-    setIsBack: (isBack) => set(() => ({isBack})),
+    isBackward: false,
+    setIsBackward: (isBackward) => set(() => ({isBackward})),
 
     isLeft: false,
     setIsLeft: (isLeft) => set(() => ({isLeft})),
@@ -39,13 +36,10 @@ export const createKeyboardSlice: ZustandSlice<KeyboardSlice> = (set) => {
     isRight: false,
     setIsRight: (isRight) => set(() => ({isRight})),
 
-    isFast: false,
-    setIsFast: (isFast) => set(() => ({isFast})),
+    isUpward: false,
+    setIsUpward: (isUpward) => set(() => ({isUpward})),
 
-    isGrab: false,
-    setIsGrab: (isGrab) => set(() => ({isGrab})),
-
-    isJump: false,
-    setIsJump: (isJump) => set(() => ({isJump})),
+    isDownward: false,
+    setIsDownward: (isDownward) => set(() => ({isDownward})),
   }
 }

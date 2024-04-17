@@ -1,52 +1,66 @@
-import {PointerEvent as RPE} from 'react'
+import * as Cesium from 'cesium'
+import React from 'react'
 import {useZustand} from '../store/useZustand'
-import {MOUSE_SYNC_DELAY} from '../utils/constants'
 import {R3fScene} from './R3fScene/R3fScene'
 import {ResiumScene} from './ResiumScene/ResiumScene'
 
 
 export const Scene = ({
   className,
-  assetId,
+  terrainProvider,
+  tilesetUrl,
 }: {
   className: string
-  assetId: number
+  terrainProvider: Cesium.CesiumTerrainProvider
+  tilesetUrl: Cesium.IonResource
 }) => {
   const {resiumViewer} = useZustand()
 
-  const onPointerDown = (e: RPE) => {
-    setTimeout(() => {
-      resiumViewer?.canvas.dispatchEvent(new PointerEvent('pointerdown', {
-        pointerId: e.pointerId,
-        bubbles: e.bubbles,
-        cancelable: e.cancelable,
-        clientX: e.clientX,
-        clientY: e.clientY,
-        screenX: e.screenX,
-        screenY: e.screenY,
-      }))
-    }, MOUSE_SYNC_DELAY)
+  const onPointerDown = (e: React.PointerEvent) => {
+    resiumViewer?.canvas.dispatchEvent(new PointerEvent('pointerdown', {
+      pointerId: e.pointerId,
+      bubbles: e.bubbles,
+      cancelable: e.cancelable,
+      clientX: e.clientX,
+      clientY: e.clientY,
+      screenX: e.screenX,
+      screenY: e.screenY,
+    }))
   }
 
-  const onPointerUp = (e: RPE) => {
-    setTimeout(() => {
-      resiumViewer?.canvas.dispatchEvent(new PointerEvent('pointerup', {
-        pointerId: e.pointerId,
-        bubbles: e.bubbles,
-        cancelable: e.cancelable,
-        clientX: e.clientX,
-        clientY: e.clientY,
-        screenX: e.screenX,
-        screenY: e.screenY,
-      }))
-    }, MOUSE_SYNC_DELAY)
+  const onPointerMove = (e: React.PointerEvent) => {
+    resiumViewer?.canvas.dispatchEvent(new PointerEvent('pointermove', {
+      pointerId: e.pointerId,
+      bubbles: e.bubbles,
+      cancelable: e.cancelable,
+      clientX: e.clientX,
+      clientY: e.clientY,
+      screenX: e.screenX,
+      screenY: e.screenY,
+    }))
+  }
+
+  const onPointerUp = (e: React.PointerEvent) => {
+    resiumViewer?.canvas.dispatchEvent(new PointerEvent('pointerup', {
+      pointerId: e.pointerId,
+      bubbles: e.bubbles,
+      cancelable: e.cancelable,
+      clientX: e.clientX,
+      clientY: e.clientY,
+      screenX: e.screenX,
+      screenY: e.screenY,
+    }))
   }
 
   return (
     <div className={className}>
-      <ResiumScene assetId={assetId}/>
+      <ResiumScene
+        terrainProvider={terrainProvider}
+        tilesetUrl={tilesetUrl}
+      />
       <R3fScene
         onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
       />
     </div>

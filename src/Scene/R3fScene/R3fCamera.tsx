@@ -2,6 +2,7 @@ import {PerspectiveCamera} from '@react-three/drei'
 import {useEffect, useRef} from 'react'
 import {PerspectiveCamera as TPC} from 'three'
 import {useZustand} from '../../store/useZustand'
+import {DEFAULT_CAMERA_DISTANCE} from '../../utils/constants'
 
 
 export const R3fCamera = () => {
@@ -17,7 +18,7 @@ export const R3fCamera = () => {
     <PerspectiveCamera
       ref={pcRef}
       makeDefault
-      position={[100, 100, 100]}
+      position={[DEFAULT_CAMERA_DISTANCE, DEFAULT_CAMERA_DISTANCE, DEFAULT_CAMERA_DISTANCE]}
     />
   )
 }
