@@ -24,6 +24,7 @@ export const ResiumWorld = () => {
         enableInputs={true}
         enableLook={false}
         inertiaZoom={0}
+        maximumZoomDistance={100000}
       />
       <Resium.Entity
         id='target'
