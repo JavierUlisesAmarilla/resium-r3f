@@ -50,31 +50,31 @@ export const ResiumViewCube = () => {
             id='side_t'
             className='side'
           >
-            <div onClick={() => flyResiumCameraToEntity(0, -Math.PI / 2)}>T</div>
+            <div onClick={() => flyResiumCameraToEntity(0, -Math.PI / 2)}>Top</div>
           </div>
           <div
             id='side_w'
             className='side'
           >
-            <div onClick={() => flyResiumCameraToEntity(Math.PI / 2)}>W</div>
+            <div onClick={() => flyResiumCameraToEntity(Math.PI / 2)}>West</div>
           </div>
           <div
             id='side_s'
             className='side'
           >
-            <div onClick={() => flyResiumCameraToEntity()}>S</div>
+            <div onClick={() => flyResiumCameraToEntity()}>South</div>
           </div>
           <div
             id='side_e'
             className='side'
           >
-            <div onClick={() => flyResiumCameraToEntity(-Math.PI / 2)}>E</div>
+            <div onClick={() => flyResiumCameraToEntity(-Math.PI / 2)}>East</div>
           </div>
           <div
             id='side_n'
             className='side'
           >
-            <div onClick={() => flyResiumCameraToEntity(Math.PI)}>N</div>
+            <div onClick={() => flyResiumCameraToEntity(Math.PI)}>North</div>
           </div>
           <div
             id='side_b'
