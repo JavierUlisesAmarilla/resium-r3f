@@ -1,4 +1,5 @@
 import * as Cesium from 'cesium'
+import {DEFAULT_CAMERA_DISTANCE} from '../utils/constants'
 import {ZustandSlice} from './useZustand'
 
 
@@ -19,7 +20,7 @@ export const createResiumSlice: ZustandSlice<ResiumSlice> = (set) => {
     resiumViewer: undefined,
     setResiumViewer: (resiumViewer) => set(() => ({resiumViewer})),
 
-    centerCartesian3: Cesium.Cartesian3.fromDegrees(120.984222, 14.599512, 100),
+    centerCartesian3: Cesium.Cartesian3.fromDegrees(120.984222, 14.599512, DEFAULT_CAMERA_DISTANCE),
     setCenterCartesian3: (centerCartesian3) => set(() => ({centerCartesian3})),
 
     isResiumCameraBeingUsed: false,

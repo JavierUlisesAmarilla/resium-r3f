@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import * as Cesium from 'cesium'
 import {useEffect, useRef} from 'react'
 import {useZustand} from '../../store/useZustand'
 import './ResiumViewCube.css'
@@ -17,8 +18,13 @@ export const ResiumViewCube = () => {
     if (!targetEntity) {
       return
     }
+    const targetCartesian3 = targetEntity.position?.getValue(resiumViewer.clock.currentTime)
+    if (!targetCartesian3) {
+      return
+    }
     setIsResiumCameraBeingUsed(true)
-    resiumViewer.flyTo(targetEntity, {offset: {heading, pitch, range: 100}}).then(() => {
+    const range = Cesium.Cartesian3.distance(resiumViewer.camera.positionWC, targetCartesian3)
+    resiumViewer.flyTo(targetEntity, {offset: {heading, pitch, range}}).then(() => {
       setIsResiumCameraBeingUsed(false)
     })
   }

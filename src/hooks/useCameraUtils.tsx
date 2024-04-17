@@ -109,13 +109,13 @@ export const useCameraUtils = () => {
       }
 
       const centerDistance = Cesium.Cartesian3.distance(resiumCamera.positionWC, pickCartesian3)
-      if (centerDistance > DEFAULT_TARGET_DISTANCE) {
-        Cesium.Cartesian3.lerp(resiumCamera.positionWC, pickCartesian3, DEFAULT_TARGET_DISTANCE / centerDistance, pickCartesian3)
-      }
       const targetEntity = resiumViewer.entities.getById('target')
       if (targetEntity) {
         // @ts-expect-error - TODO
         targetEntity.position = pickCartesian3
+      }
+      if (centerDistance > DEFAULT_TARGET_DISTANCE) {
+        Cesium.Cartesian3.lerp(resiumCamera.positionWC, pickCartesian3, DEFAULT_TARGET_DISTANCE / centerDistance, pickCartesian3)
       }
       const r3fCameraPosition = cesiumCartesian3ToThreePosition(resiumCamera.positionWC, centerCartesian3)
       r3fCamera.position.copy(r3fCameraPosition)

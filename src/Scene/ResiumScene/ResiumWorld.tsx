@@ -9,6 +9,7 @@ export const ResiumWorld = () => {
 
   useEffect(() => {
     if (viewer) {
+      viewer.camera.flyTo({destination: centerCartesian3, orientation: {heading: 0, pitch: -Math.PI / 4}})
       setResiumViewer(viewer)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -24,7 +25,6 @@ export const ResiumWorld = () => {
         enableLook={false}
         inertiaZoom={0}
       />
-      <Resium.CameraFlyTo destination={centerCartesian3}/>
       <Resium.Entity
         id='target'
         point={{pixelSize: 10}}
