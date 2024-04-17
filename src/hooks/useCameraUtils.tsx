@@ -1,17 +1,14 @@
 import * as Cesium from 'cesium'
-import gsap from 'gsap'
 import {useControls} from 'leva'
 import {useCallback, useEffect} from 'react'
-import {Box3, MathUtils, Mesh, OrthographicCamera, PerspectiveCamera, Vector3} from 'three'
+import {MathUtils, OrthographicCamera, PerspectiveCamera} from 'three'
 import {useZustand} from '../store/useZustand'
-import {cesiumCartesian3ToThreePosition, getAngle, getCenterPosition, normalizeAngle, threePositionToCesiumMatrix4} from '../utils/common'
-import {ANGLE_TOLERANCE_FACTOR, ANIM_DURATION, AXES_LENGTH, CAMERA_NEAR, DEFAULT_CAMERA_DISTANCE, DEFAULT_TARGET_DISTANCE, ROT_ANIM_FACTOR, SHOW_AXES_HELPER} from '../utils/constants'
+import {cesiumCartesian3ToThreePosition, normalizeAngle, threePositionToCesiumMatrix4} from '../utils/common'
+import {AXES_LENGTH, CAMERA_NEAR, DEFAULT_TARGET_DISTANCE, SHOW_AXES_HELPER} from '../utils/constants'
 import {controls} from '../utils/controls'
 
 
 let resiumAxesHelpers: {[key: string]: Cesium.DebugModelMatrixPrimitive} = {}
-const box3 = new Box3()
-const vector3 = new Vector3()
 const pickCartesian2 = new Cesium.Cartesian2()
 
 
@@ -20,10 +17,8 @@ export const useCameraUtils = () => {
     resiumViewer,
     r3fControlsRef,
     r3fCamera,
-    areAllEventsOnLockDown, setAreAllEventsOnLockDown,
     centerCartesian3,
-    tileset,
-    isResiumCameraBeingUsed, setIsResiumCameraBeingUsed,
+    isResiumCameraBeingUsed,
     isR3fCameraInSync, setIsR3fCameraInSync,
   } = useZustand()
   const {navigationMode} = useControls(controls)
@@ -117,6 +112,11 @@ export const useCameraUtils = () => {
       if (centerDistance > DEFAULT_TARGET_DISTANCE) {
         Cesium.Cartesian3.lerp(resiumCamera.positionWC, pickCartesian3, DEFAULT_TARGET_DISTANCE / centerDistance, pickCartesian3)
       }
+      const targetEntity = resiumViewer.entities.getById('target')
+      if (targetEntity) {
+        // @ts-expect-error - TODO
+        targetEntity.position = pickCartesian3
+      }
       const r3fCameraPosition = cesiumCartesian3ToThreePosition(resiumCamera.positionWC, centerCartesian3)
       r3fCamera.position.copy(r3fCameraPosition)
       const targetPosition = cesiumCartesian3ToThreePosition(pickCartesian3, centerCartesian3)
@@ -126,108 +126,6 @@ export const useCameraUtils = () => {
       }
     }
   }, [centerCartesian3, isR3fCameraInSync, isResiumCameraBeingUsed, navigationMode, r3fCamera, r3fControls, resiumCamera, resiumScene, resiumViewer, setIsR3fCameraInSync, syncFieldOfView])
-
-  // Make r3f camera look at the given target smoothly with animation.
-  const animateR3fLookAt = async (target: Vector3) => {
-    if (r3fControls && !areAllEventsOnLockDown && r3fCamera) {
-      setAreAllEventsOnLockDown(true)
-      const angleTo = getAngle(r3fControls.target, r3fCamera.position, target)
-      await gsap.timeline().to(r3fControls.target, {
-        x: target.x,
-        y: target.y,
-        z: target.z,
-        duration: angleTo > Math.PI * ANGLE_TOLERANCE_FACTOR ? ANIM_DURATION * ROT_ANIM_FACTOR : 0,
-      })
-      setAreAllEventsOnLockDown(false)
-    }
-  }
-
-  // Zoom and rotate r3f camera to the given target smoothly with animation.
-  const animateR3fZoomToTarget = async (target: Vector3, zoomDistance = 0) => {
-    await animateR3fLookAt(target)
-
-    if (!areAllEventsOnLockDown && r3fCamera) {
-      setAreAllEventsOnLockDown(true)
-      const direction = target.sub(r3fCamera.position)
-      const directionLength = direction.length()
-      const scale = (directionLength - zoomDistance) / directionLength
-      direction.multiplyScalar(scale)
-      const moveTarget = r3fCamera.position.clone().add(direction)
-      await gsap.timeline().to(r3fCamera.position, {
-        x: moveTarget.x,
-        y: moveTarget.y,
-        z: moveTarget.z,
-        duration: ANIM_DURATION,
-      })
-      setAreAllEventsOnLockDown(false)
-    }
-  }
-
-  // Zoom and rotate r3f camera to the given object smoothly with animation.
-  const animateR3fZoomToObject = async (obj: Mesh) => {
-    box3.setFromObject(obj)
-    const maxSize = (box3.max.x - box3.min.x + box3.max.y - box3.min.y + box3.max.z - box3.min.z) / 2
-    obj.getWorldPosition(vector3)
-    await animateR3fZoomToTarget(vector3, maxSize)
-  }
-
-  // Zoom and rotate r3f camera to the default position smoothly with animation.
-  const animateR3fZoomToDefault = async () => {
-    await animateR3fLookAt(new Vector3(0, 0, 0))
-
-    if (!areAllEventsOnLockDown && r3fCamera) {
-      setAreAllEventsOnLockDown(true)
-      await gsap.timeline().to(r3fCamera.position, {
-        x: DEFAULT_CAMERA_DISTANCE,
-        y: DEFAULT_CAMERA_DISTANCE,
-        z: DEFAULT_CAMERA_DISTANCE,
-        duration: ANIM_DURATION,
-      })
-      setAreAllEventsOnLockDown(false)
-    }
-  }
-
-  const flyResiumCameraToEntity = (entityId: string, height = 30) => {
-    if (!resiumViewer) {
-      return
-    }
-    const entity = resiumViewer.entities.getById(entityId)
-    if (!entity) {
-      return
-    }
-    let entityPosition
-
-    if (entity.polygon) {
-      const positionArr = entity.polygon.hierarchy?.getValue(resiumViewer.clock.currentTime).positions
-      entityPosition = getCenterPosition(positionArr)
-    }
-
-    setIsResiumCameraBeingUsed(true)
-
-    if (entityPosition) {
-      const entityCartographic = Cesium.Cartographic.fromCartesian(entityPosition)
-      const targetPosition = Cesium.Cartesian3.fromRadians(entityCartographic.longitude, entityCartographic.latitude, entityCartographic.height + height)
-      resiumViewer.camera.flyTo({
-        destination: targetPosition,
-        maximumHeight: 0,
-        complete: () => {
-          setIsResiumCameraBeingUsed(false)
-        },
-      })
-    } else {
-      resiumViewer.flyTo(entity, {maximumHeight: 0}).then(() => {
-        setIsResiumCameraBeingUsed(false)
-      })
-    }
-  }
-
-  // Zoom in or out r3f camera and synchronize to cesium camera.
-  const zoomR3f = (factor: number) => {
-    if (r3fControls && r3fCamera) {
-      const direction = r3fControls.target.clone().sub(r3fCamera.position).multiplyScalar(factor)
-      r3fCamera.position.add(direction)
-    }
-  }
 
   useEffect(() => {
     resiumViewer?.scene.postRender.addEventListener(syncResiumToR3f)
@@ -243,25 +141,17 @@ export const useCameraUtils = () => {
   }, [centerCartesian3, devUpdateResiumAxesHelper])
 
   useEffect(() => {
-    if (resiumScene) {
+    if (resiumViewer && resiumScene) {
       if (navigationMode === 'mapControls') {
         resiumScene.screenSpaceCameraController.enableInputs = true
-        if (tileset) {
-          resiumViewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY)
-        }
+        resiumViewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY)
       } else {
         resiumScene.screenSpaceCameraController.enableInputs = false
       }
     }
-  }, [navigationMode, resiumScene, resiumViewer, tileset])
+  }, [navigationMode, resiumScene, resiumViewer])
 
   return {
-    animateR3fLookAt,
-    animateR3fZoomToObject,
-    animateR3fZoomToTarget,
-    animateR3fZoomToDefault,
     syncR3fToResium,
-    flyResiumCameraToEntity,
-    zoomR3f,
   }
 }

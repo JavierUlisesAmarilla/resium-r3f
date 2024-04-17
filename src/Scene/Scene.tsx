@@ -8,11 +8,9 @@ import {ResiumScene} from './ResiumScene/ResiumScene'
 export const Scene = ({
   className,
   terrainProvider,
-  tilesetUrl,
 }: {
   className: string
   terrainProvider: Cesium.CesiumTerrainProvider
-  tilesetUrl: Cesium.IonResource
 }) => {
   const {resiumViewer} = useZustand()
 
@@ -54,10 +52,7 @@ export const Scene = ({
 
   return (
     <div className={className}>
-      <ResiumScene
-        terrainProvider={terrainProvider}
-        tilesetUrl={tilesetUrl}
-      />
+      <ResiumScene terrainProvider={terrainProvider}/>
       <R3fScene
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}

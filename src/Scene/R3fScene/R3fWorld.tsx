@@ -24,7 +24,6 @@ export const R3fWorld = () => {
         setDpr(0.5 * DPR_FACTOR)
       }}
     >
-      {/* <R3fAssets/> */}
       {SHOW_AXES_HELPER && <axesHelper args={[AXES_LENGTH]}/>}
     </PerformanceMonitor>
   )

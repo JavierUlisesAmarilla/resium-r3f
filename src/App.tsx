@@ -1,75 +1,22 @@
-import 'flexlayout-react/style/light.css'
-import {One} from './One'
-import {CustomLayout} from './Scene/Utils/CustomLayout'
+import * as Cesium from 'cesium'
+import {useEffect, useState} from 'react'
+import {Scene} from './Scene/Scene'
 
 
 export const App = () => {
-  return (
-    <CustomLayout
-      components={{
-        one: (<One/>),
-        two: (<div>Two</div>),
-        three: (<div>Three</div>),
-        four: (<div>Four</div>),
-      }}
-      json={{
-        global: {tabEnableClose: false},
-        borders: [
-          {
-            type: 'border',
-            location: 'bottom',
-            size: 100,
-            children: [
-              {
-                type: 'tab',
-                name: 'Four',
-                component: 'four',
-              },
-            ],
-          },
-          {
-            type: 'border',
-            location: 'left',
-            size: 100,
-            children: [],
-          },
-        ],
-        layout: {
-          type: 'row',
-          weight: 100,
-          children: [
-            {
-              type: 'tabset',
-              weight: 50,
-              selected: 0,
-              children: [
-                {
-                  type: 'tab',
-                  name: 'One',
-                  component: 'one',
-                },
-              ],
-            },
-            {
-              type: 'tabset',
-              weight: 50,
-              selected: 0,
-              children: [
-                {
-                  type: 'tab',
-                  name: 'Two',
-                  component: 'two',
-                },
-                {
-                  type: 'tab',
-                  name: 'Three',
-                  component: 'three',
-                },
-              ],
-            },
-          ],
-        },
-      }}
+  const [terrainProvider, setTerrainProvider] = useState<Cesium.CesiumTerrainProvider>()
+
+  useEffect(() => {
+    Cesium.createWorldTerrainAsync({
+      requestVertexNormals: true,
+      requestWaterMask: true,
+    }).then(setTerrainProvider)
+  }, [])
+
+  return terrainProvider && (
+    <Scene
+      className='relative flex flex-col w-full h-full'
+      terrainProvider={terrainProvider}
     />
   )
 }

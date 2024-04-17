@@ -33,6 +33,7 @@ body,
   -webkit-overflow-scrolling: touch;
 }
 
-.cesium-viewer-bottom {
+.cesium-viewer-bottom,
+#leva__root {
   display: none;
 }
