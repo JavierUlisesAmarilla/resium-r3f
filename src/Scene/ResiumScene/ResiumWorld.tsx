@@ -27,7 +27,7 @@ export const ResiumWorld = () => {
       />
       <Resium.Entity
         id='target'
-        point={{pixelSize: 10}}
+        point={{pixelSize: 1}}
       />
     </>
   )
